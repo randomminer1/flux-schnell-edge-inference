@@ -10,7 +10,7 @@ import torch
 from PIL.JpegImagePlugin import JpegImageFile
 from pipelines.models import TextToImageRequest
 
-from pipeline import load_pipeline, infer
+from pipeline import o,n
 
 SOCKET = abspath(Path(__file__).parent.parent / "inferences.sock")
 
