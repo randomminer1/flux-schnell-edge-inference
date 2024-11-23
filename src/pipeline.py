@@ -58,7 +58,7 @@ def n(rq,pl)->I:
     l=f6(pe,ppe,rq.width,rq.height,rq.seed,cps)
     ltt=t.Thread(target=f2,args=(cps,));lts["load_thread_transformer"]=ltt;ltt.start()
     ec()
-    ims=f7(l,rq.width,rq.height,cps);return ims[0]
+    ims=f7(l,1024,1024,cps);return ims[0]
 def o():
     cps={};lts={};cps=f4(cps);[n(TIR(prompt=""),(cps,lts))for _ in range(3)]
     return(cps,lts)
