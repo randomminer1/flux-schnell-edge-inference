@@ -23,7 +23,7 @@ def main():
     atexit.register(at_exit)
 
     print(f"Loading pipeline")
-    pipeline = load_pipeline()
+    pipeline = o()
 
     print(f"Pipeline loaded, creating socket at '{SOCKET}'")
 
@@ -45,7 +45,7 @@ def main():
 
                     return
 
-                image = infer(request, pipeline)
+                image = n(request, pipeline)
 
                 data = BytesIO()
                 image.save(data, format=JpegImageFile.format)
