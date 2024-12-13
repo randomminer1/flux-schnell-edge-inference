@@ -41,6 +41,10 @@ def load_pipeline() -> Pipeline:
         use_safetensors=False,
     )
 
+    transformer = torch.compile(
+        transformer, options={"triton.cudagraphs": True}, fullgraph=True
+    )
+
 
     vae = AutoencoderKL.from_pretrained(
         CHECKPOINT,
