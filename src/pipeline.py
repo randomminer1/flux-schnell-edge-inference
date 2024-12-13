@@ -53,6 +53,9 @@ def load_pipeline() -> Pipeline:
         local_files_only=True,
         torch_dtype=torch.bfloat16,
     )
+    vae.decoder = torch.compile(
+        vae.decoder, options={"triton.cudagraphs": True}, fullgraph=True
+    )
 
 
     pipeline = FluxPipeline.from_pretrained(
