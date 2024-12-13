@@ -26,7 +26,7 @@ revision = "741f7c3ce8b383c54771c7003378a50191e9efe9"
 exclude = ["transformer"]
 
 [[tool.edge-maxxing.models]]
-repository = ""barneystinson/FLUX.1-schnell-int8wo""
+repository = "barneystinson/FLUX.1-schnell-int8wo"
 revision = "b9fa75333f9319a48b411a2618f6f353966be599"
 
 
