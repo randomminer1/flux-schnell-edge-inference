@@ -33,6 +33,19 @@ def load_pipeline() -> Pipeline:
         torch_dtype=torch.bfloat16,
     )
 
+    path = os.path.join(HF_HUB_CACHE, "models--barneystinson--FLUX.1-schnell-int8wo/snapshots/b9fa75333f9319a48b411a2618f6f353966be599")
+
+    transformer = FluxTransformer2DModel.from_pretrained(
+        path,
+        torch_dtype=torch.bfloat16,
+        use_safetensors=False,
+    )
+
+    transformer.to(device="cuda", memory_format=torch.channels_last)
+    transformer = torch.compile(
+        transformer, options={"triton.cudagraphs": True}, fullgraph=True
+    )
+
     vae = AutoencoderKL.from_pretrained(
         CHECKPOINT,
         revision=REVISION,
@@ -40,13 +53,9 @@ def load_pipeline() -> Pipeline:
         local_files_only=True,
         torch_dtype=torch.bfloat16,
     )
-
-    path = os.path.join(HF_HUB_CACHE, "models--RobertML--FLUX.1-schnell-int8wo/snapshots/307e0777d92df966a3c0f99f31a6ee8957a9857a")
-
-    transformer = FluxTransformer2DModel.from_pretrained(
-        path,
-        torch_dtype=torch.bfloat16,
-        use_safetensors=False,
+    vae.to(device="cuda", memory_format=torch.channels_last)
+    vae.decoder = torch.compile(
+        vae.decoder, options={"triton.cudagraphs": True}, fullgraph=True
     )
 
     pipeline = FluxPipeline.from_pretrained(
@@ -60,14 +69,23 @@ def load_pipeline() -> Pipeline:
         torch_dtype=torch.bfloat16,
     ).to("cuda")
 
-    pipeline("")
+    generator = Generator(pipeline.device).manual_seed(42)
+    
+    for _ in range(3):
+        pipeline(
+            "photo of a dog", 
+            generator=generator,
+            num_inference_steps=4,
+            max_sequence_length=256,
+            guidance_scale=0.0,
+            height=1024,
+            width=1024,
+        )
 
     return pipeline
 
 def infer(request: TextToImageRequest, pipeline: Pipeline) -> Image:
     gc.collect()
-    torch.cuda.empty_cache()
-    torch.cuda.reset_peak_memory_stats()
 
     generator = Generator(pipeline.device).manual_seed(request.seed)
 
