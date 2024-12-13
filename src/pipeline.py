@@ -41,10 +41,6 @@ def load_pipeline() -> Pipeline:
         use_safetensors=False,
     )
 
-    transformer.to(device="cuda", memory_format=torch.channels_last)
-    transformer = torch.compile(
-        transformer, options={"triton.cudagraphs": True}, fullgraph=True
-    )
 
     vae = AutoencoderKL.from_pretrained(
         CHECKPOINT,
@@ -53,10 +49,7 @@ def load_pipeline() -> Pipeline:
         local_files_only=True,
         torch_dtype=torch.bfloat16,
     )
-    vae.to(device="cuda", memory_format=torch.channels_last)
-    vae.decoder = torch.compile(
-        vae.decoder, options={"triton.cudagraphs": True}, fullgraph=True
-    )
+
 
     pipeline = FluxPipeline.from_pretrained(
         CHECKPOINT,
