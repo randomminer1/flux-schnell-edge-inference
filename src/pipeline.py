@@ -33,7 +33,7 @@ def load_pipeline() -> Pipeline:
         torch_dtype=torch.bfloat16,
     )
 
-    path = os.path.join(HF_HUB_CACHE, "models--barneystinson--FLUX.1-schnell-int8wo/snapshots/b9fa75333f9319a48b411a2618f6f353966be599")
+    path = os.path.join(HF_HUB_CACHE, "models--RobertML--FLUX.1-schnell-int8wo/snapshots/307e0777d92df966a3c0f99f31a6ee8957a9857a")
 
     transformer = FluxTransformer2DModel.from_pretrained(
         path,
