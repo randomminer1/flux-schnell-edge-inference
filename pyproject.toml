@@ -26,8 +26,9 @@ revision = "741f7c3ce8b383c54771c7003378a50191e9efe9"
 exclude = ["transformer"]
 
 [[tool.edge-maxxing.models]]
-repository = "RobertML/FLUX.1-schnell-int8wo"
-revision = "307e0777d92df966a3c0f99f31a6ee8957a9857a"
+repository = ""barneystinson/FLUX.1-schnell-int8wo""
+revision = "b9fa75333f9319a48b411a2618f6f353966be599"
+
 
 [project.scripts]
 start_inference = "main:main"
