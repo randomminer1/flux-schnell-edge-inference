@@ -17,6 +17,7 @@ REVISION = "741f7c3ce8b383c54771c7003378a50191e9efe9"
 
 
 def load_pipeline() -> Pipeline:
+    print('hi')
     text_encoder = CLIPTextModel.from_pretrained(
         CHECKPOINT,
         revision=REVISION,
